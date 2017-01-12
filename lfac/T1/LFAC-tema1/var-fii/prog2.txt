@@ -1,0 +1,50 @@
+ intreg factorial(intreg n)
+  start_func
+    daca n==0
+      atunci
+        returneaza 1;
+      sfarsit_atunci
+    altfel
+      returneaza n*factorial(n-1);
+    sfarsit_altfel
+  sfarsit_func;
+
+clasa book
+  start_clasa
+    intreg code;
+    sir_caractere name;
+    real price;
+   
+    vid setPrice(real x)
+	   start_func
+	     price <- x;
+	   sfarsit_func;
+	
+	sir_caractere getNume()
+       start_func
+         returneaza name;
+	   sfarsit_func;
+  sfarsit_clasa;
+	
+start_program
+ 
+   clasa book python;
+   real y<-1,37;
+   sir_caractere auxiliar;
+   
+   python.setPrice(y);
+   auxiliar<-getNume();
+   
+   
+  /* 
+     utilizarea unei structuri repetitive
+     cu numar cunoscut de pasi - for 
+  */
+  
+  intreg v[50];
+  intreg j<-0;
+  pentru i<-0 cat_timp i<5 executa i<-i+1
+  v[i]<-j+1;
+  sfarsit_pentru 
+
+sfarsit_program

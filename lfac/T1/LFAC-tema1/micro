@@ -1,0 +1,59 @@
+
+integer @tablou[99][89][79][1];
+
+@clasa.@atribut:="un sir oarecare";
+@variabila:=@clasa.@apelfunctie(@variab.@ariab,2);
+@clasa.@inclasa.@inclasa:=3;
+
+integer @a:=999;
+
+## hai sa avem si
+comentariu ##
+
+char @doarantet();
+
+real @rad(integer @abc,char @im, const char @varb)
+{
+@abc:=@cla.@varb(23);
+@clasa @instanta := new @clasa;
+char @x;
+if(@x>2)
+{@x:=2;}
+else
+{@x:=5;
+
+}
+
+for(real @abc:=29;@abc<=9&&@abc>=0||@x+5<2;@abc:=@abc+1)
+{
+@apelfnc(@ap(2,3),@hello);
+const char @cns:=888;
+}
+
+while(@youwork==@iamhappy)
+{
+@abZ9:=(2%@funky(29,99,@x+5,@f(2,5)))*@abx;
+integer @random:=99.99;
+}
+
+@varb:="multe caractere^_^";
+}
+
+class @clasa
+{
+private:
+integer @xd2:=2.234*2+1-2/45;
+public:
+char @fnc(integer @ovariab, const real @ceva)
+{
+return @chiar_merge;
+}
+}@eu;
+
+main(){
+## aici e main-ul
+car e obligatoriu ##
+
+real @cutarescu:=1999.22333;
+
+}
