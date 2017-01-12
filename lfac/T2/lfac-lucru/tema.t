@@ -3,7 +3,7 @@ integer @z:=-10;
 integer @afrosamurai;
 integer @altcv;
 integer @xy:=-7+1;
-{
+main(){
 @abc:=maxim(2,3,9);
 print(@abc);
 @abc:=6+@z+cmmdc(12,cmmdc(12,-@xy));

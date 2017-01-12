@@ -4,7 +4,7 @@ extern FILE* yyin;
 extern char* yytext;
 extern int yylineno;
 %}
-%token MN TIP COMPARE LOGIC CLAS WHILE NEW PRIV PUBL FOR CONST IF ELSE ID ASSIGN NR REAL RET CHARS
+%token MN TIP COMPARE LOGIC CLAS WHILE NEW PRIV PUBL FOR CONST IF ELSE ID ASSIGN NR REAL RET CHARS ARRAY CHAR
 %start program
 %left COMPARE
 %left '+' '-'
@@ -178,4 +178,7 @@ printf("eroare: %s la linia:%d\n",s,yylineno);
 int main(int argc, char** argv){
 yyin=fopen(argv[1],"r");
 yyparse();
-}
+}/*
+@[a-zA-Z][a-zA-Z0-9]*\[0|([1-9][0-9]*)\] {return ARRAY;} 
+\'.\'  {return CHAR;}
+*/

@@ -1,4 +1,4 @@
-#include "kaneki.h"
+#include "prime.h"
 
 int cmmdc(int a, int b)
 {

@@ -25,14 +25,12 @@
 "cmmdc" {return CMMDC;}
 "maxim" {return MAXIM;}
 "sumacfr" {return SUMACFR;}
-@[a-zA-Z][a-zA-Z0-9]*\[0|([1-9][0-9]*)\] {return ARRAY} 
 @[a-zA-Z][a-zA-Z0-9]* {return ID;}
 ":=" {return ASSIGN;}
-0|([1-9][0-9]*)"."?(0|([1-9][0-9]*))? {return REAL;}
 0|([1-9][0-9]*) {yylval=atoi(yytext); return NR;}
+0|([1-9][0-9]*)"."?(0|([1-9][0-9]*))? {return REAL;}
 [ \t] ;
 \n {yylineno++;}
-\'.\'  {return CHAR;}
 \".*\" {return CHARS;}
 . {return yytext[0];}
 

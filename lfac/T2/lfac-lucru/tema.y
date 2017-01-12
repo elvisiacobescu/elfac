@@ -1,7 +1,7 @@
 %{
 #include <stdio.h>
 #include <string.h>
-#include "kaneki.h"
+#include "prime.h"
 
 #ifndef YYSTYPE
 #define YYSTYPE int
@@ -47,6 +47,12 @@ declaratii: declaratie
  | declaratii declaratie
  ;
  
+ corp:
+ '{' instructiuni '}'
+ | '{' /*empty */ '}'
+ ;
+ 
+ 
 idd: ID {$$=strdup(yytext);}//intoarce un pointer--adica tot 4B ca int
 ;
 
@@ -82,20 +88,7 @@ declaratie: TIP idd ';' {
 			    ind++;
 			    }
 			}
- /*
- | idd ASSIGN expr ';' {}
- | idd tabl ASSIGN expr ';' {}
- | cls ASSIGN expr ';' {}
- | TIP idd tabl ';' {}
- | CONST TIP idd tabl ';' {}
- | TIP idd tabl ASSIGN expr ';' {}
- | CONST TIP idd ';' {}
- | CONST TIP idd ASSIGN expr ';' {}
- | TIP idd '(' lista ')' ';' {}
- | TIP idd '(' lista ')' corp {}
- | CLAS idd '{' inclass '}' ';' {}
- | CLAS idd '{' inclass '}' idds ';' {}
- | TIP idd ASSIGN expr ';' {
+	| TIP idd ASSIGN expr ';' {
 			strcpy(idulcurent,$2);
 			if(ind>0)
 			    {int i=0;
@@ -149,7 +142,19 @@ declaratie: TIP idd ';' {
 			    ind++;
 			    }
 			} 
- */
+ /*
+ | idd ASSIGN expr ';' {}
+ | idd tabl ASSIGN expr ';' {}
+ | cls ASSIGN expr ';' {}
+ | TIP idd tabl ';' {}
+ | CONST TIP idd tabl ';' {}
+ | TIP idd tabl ASSIGN expr ';' {}
+ | CONST TIP idd ';' {}
+ | CONST TIP idd ASSIGN expr ';' {}
+ | TIP idd '(' lista ')' ';' {}
+ | TIP idd '(' lista ')' corp {}
+ | CLAS idd '{' inclass '}' ';' {}
+ | CLAS idd '{' inclass '}' idds ';' {}
  | TIP idd ASSIGN expr ';' {
 			strcpy(idulcurent,$2);
 			if(ind>0)
@@ -177,13 +182,13 @@ declaratie: TIP idd ';' {
 			    ind++;
 			    }
 			}
- 			 		
+ 			 		*/
  ;
  
  cls:
- idd '.' id
- | idd '.' id tabl
- | idd '.' id '(' listap ')'
+ idd '.' id 
+ | idd '.' id tabl 
+ | idd '.' id '(' listap ')' 
  ;
  
 inclass :
@@ -191,14 +196,33 @@ inclass :
  | inclass instr
  ;
  
+ lista:
+ /*empty*/
+ | TIP ID
+ | TIP ID tabl
+ | CONST TIP ID
+ | CONST TIP ID tabl
+ | lista ',' TIP ID
+ | lista ',' TIP ID tabl
+ | lista ',' CONST TIP ID
+ | lista ',' CONST TIP ID tabl
+ ;
+ 
+ 
 instr:
  PRIV ':'
  | PUBL ':'
  | declincls
  ;
  
+ listap:
+ expr
+ | listap ',' expr
+ ;
+
+ 
 declincls:
- TIP idd ';'
+ TIP idd ';' 
  | cls ASSIGN expr ';'
  | TIP idd ASSIGN expr ';'
  | TIP idd tabl ASSIGN expr ';'
@@ -221,6 +245,7 @@ instructiuni: instructiune ';'
  | instructiuni instructiune ';'
  ;
  
+ 
 id: ID {
 	int i=0;
 	strcpy(idulcurent,strdup(yytext));
@@ -238,7 +263,28 @@ instructiune: idd ASSIGN expr {
 			  while(i<ind && strcmp(lista[i].nume,idulcurent)!=0)	i++;
 			  if(i==ind) {printf("Linia %d: variabila %s nedeclarata\n",yylineno,idulcurent); ++erori; exit(1);}
 			  else	{lista[i].val=$3; lista[i].init=1;}				  
-			  }		  
+			  }	
+ | cls ASSIGN expr ';'
+ | ID ID ASSIGN NEW ID ';'
+ | TIP ID tabl ';'
+ | RET ID ';'
+ | RET ID tabl ';'
+ | CONST TIP ID ';'
+ | CONST TIP ID tabl ';'
+ | TIP ID ASSIGN expr ';'
+ | TIP ID tabl ASSIGN expr ';'
+ | ID ASSIGN expr ';'
+ | ID tabl ASSIGN expr ';'
+ | CONST TIP ID ASSIGN expr ';'
+ | CONST TIP ID tabl ASSIGN expr ';'
+ | IF '(' conditii ')' corp ELSE corp 
+ | FOR '(' TIP ID ASSIGN expr ';' conditii ';' actiune ')' corp
+ | FOR '(' ID ASSIGN expr ';' conditii ';' actiune ')' corp
+ | FOR '(' TIP ID tabl ASSIGN expr ';' conditii ';' actiune ')' corp
+ | FOR '(' ID tabl ASSIGN expr ';' conditii ';' actiune ')' corp
+ | WHILE '(' conditii ')' corp
+ | ID '(' listap ')' ';'
+ | TIP ID ASSIGN ID '(' listap ')'
  | PRINT '(' idd ')' {
 			 int i=0;
 			 strcpy(idulcurent,$3);
@@ -250,6 +296,11 @@ instructiune: idd ASSIGN expr {
 			 }
  ;
  
+ conditii:
+ expr COMPARE expr
+ | conditii LOGIC expr COMPARE expr
+ ;
+ 
 expr: expr '-' expr {$$=$1-$3;}
  | expr '+' expr {$$=$1+$3;}
  | expr '*' expr {$$=$1*$3;}
@@ -257,6 +308,7 @@ expr: expr '-' expr {$$=$1-$3;}
  | expr '/' expr {$$=$1/$3;}
  | id {$$=$1;}
  | NR {$$=$1;}
+ |'(' expr ')'
  | CMMDC '(' expr ',' expr ')' {$$=cmmdc($3,$5);}
  | SUMACFR '(' expr ')' {$$=sumacfr($3);}
  | MAXIM '(' expr ',' expr ',' expr ')' {$$=maxim($3, $5, $7);}
@@ -264,6 +316,17 @@ expr: expr '-' expr {$$=$1-$3;}
  | '-' expr %prec NEG {$$=-$2;}
  ;
  
+ actiune:
+ ID '++'
+ | ID '--'
+ | ID ASSIGN expr
+ | ID tabl '++'
+ | ID tabl '--'
+ | ID tabl ASSIGN expr
+ | cls '++'
+ | cls '--'
+ | cls ASSIGN expr
+ ;
 %%
 
 int main(int argc, char** argv){
